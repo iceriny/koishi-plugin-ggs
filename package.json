@@ -1,0 +1,22 @@
+{
+  "name": "koishi-plugin-ggs",
+  "description": "能不能好好说话? 缩写翻译工具, 感谢https://github.com/itorr/nbnhhsh ggs 是 good good speech 的缩写, >.<",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "license": "MIT",
+  "scripts": {},
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "plugin"
+  ],
+  "devDependencies": {},
+  "peerDependencies": {
+    "koishi": "^4.18.7"
+  }
+}
