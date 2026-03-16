@@ -31,7 +31,7 @@ export function apply(ctx: Context, config: Config) {
 
   if (config.useCommand) {
     ctx
-      .command("ggs [...abb:string]")
+      .command("ggs [...abb:string]", "查询缩写含义")
       .usage("将缩写转换为对应的翻译, ggs 是 good good speech 的缩写, >.<")
       .example("ggs awsl")
       .example("ggs awsl xswl")
