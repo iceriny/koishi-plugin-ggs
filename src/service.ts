@@ -1,6 +1,7 @@
 import { Context, Service } from "koishi";
 
 const NBNHHSH_BASE_URL = "https://lab.magiconch.com/api/nbnhhsh";
+const WHAT2EAT_API_URL = "https://api.istero.com/resource/v1/eat/what";
 
 /**
  * 缩写含义查询结果
@@ -12,6 +13,17 @@ export interface NbnhhshGuessResult {
   trans?: string[] | null;
   /** 输入时可能的翻译 */
   inputting?: string[] | null;
+}
+
+export interface What2EatResult {
+  food?: string | null;
+}
+
+export interface What2EatResponse {
+  code: number;
+  data?: What2EatResult | null;
+  message?: string;
+  elapsedTime?: number;
 }
 
 export class GgsService extends Service {
@@ -58,5 +70,16 @@ export class GgsService extends Service {
         },
       },
     );
+  }
+
+  /**
+   * 获取今天吃什么的随机推荐。
+   */
+  async what2eat(token: string): Promise<What2EatResponse> {
+    return this.ctx.http.get<What2EatResponse>(WHAT2EAT_API_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

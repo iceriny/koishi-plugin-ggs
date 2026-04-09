@@ -17,12 +17,16 @@ export const inject = {
 export interface Config {
   /** 是否使用指令 */
   useCommand: boolean;
+  /** what2eat 接口 Token */
+  what2eatToken?: string;
 }
 
 export const Config: Schema<Config> = Schema.object({
   useCommand: Schema.boolean()
     .default(false)
     .description("是否使用指令, 默认不使用"),
+  what2eatToken: Schema.string()
+    .description("what2eat 接口 Token, 用于调用今天吃什么 API"),
 });
 
 export function apply(ctx: Context, config: Config) {
@@ -46,5 +50,31 @@ export function apply(ctx: Context, config: Config) {
           .join("===============\n");
         return result;
       });
+
+    ctx.command("what2eat", "随机推荐今天吃什么").action(async () => {
+      if (!config.what2eatToken) {
+        return "请先在 ggs 插件配置中填写 what2eatToken";
+      }
+
+      try {
+        const result = await ggsService.what2eat(config.what2eatToken);
+        const food = result.data?.food?.trim();
+
+        if (result.code !== 200) {
+          return result.message || "获取今日推荐失败";
+        }
+
+        if (!food) {
+          return "接口返回成功, 但没有获取到推荐食物";
+        }
+
+        return `我要吃.... ${food} !`;
+
+
+      } catch (error) {
+        ctx.logger("ggs").warn(error);
+        return "获取今日推荐失败, 请稍后重试";
+      }
+    });
   }
 }
